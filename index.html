@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+<div>
+<button id="floating-map-btn" class="map-btn" onclick="searchFlight('map')" style="display: none;">
+    🗺️ View Flight Path
+</button>
+</div>
+<div id="left-sidebar">
+    <h3>Flight Summary</h3>
+    <div id="summary-content">
+      <p><strong>Pax name: </strong><span id="sum-pax-name">---</span></p>
+      <p class="review"><strong>Trip Type: </strong><span id="sum-type">---</span></p>
+      <p class="review"><strong>Leaving: </strong><span id="sum-dep">---</span></p>
+      <p class="review"><strong>Going: </strong><span id="sum-arr">---</span></p>
+      <p class="review"><strong>Dep-date: </strong><span id="dep-date">---</span></p>
+      <p class="review"><strong>Ret-date: </strong><span id="ret-date">---</span></p>
+      <p class="review"><strong>Destination: </strong><span id="destination">---</span></p>
+      <p><strong>Last visit: </strong> <span id="sum-last-visit">---</span></p>
+      <p><strong>WebPrice: </strong><span id="sum-online-price">---</span></p>
+      <p><strong>WebDate: </strong><span id="sum-date-price">---</span></p>
+      <p><strong>Website: </strong><span id="sum-website-type">---</span></p>
+      <p class="review"><strong>Preferences: </strong><span id="sum-customer-needs">---</span></p>
+      <p><strong class="review">ArriveBefore: </strong><span id="sum-arrive">---</span></p>
+       <p><strong class="review">Online Price: </strong><span id="sum-online-price">---</span></p>
+      
+    
+  </div>
+  
+   <div class=  "reset-container">
+     <button onclick="resetAllData()" class="reset-btn"> Reset All</button>
+</div>
+</div>
+
+<div class="mode-dropdown">
+    <button class="dropbtn">MODE</button>
+    <div class="dropdown-content">
+      <a href="javascript:void(0)" onclick="switchMode('poetic')">Light Mode</a>
+      <a href="javascript:void(0)" onclick="switchMode('direct')">Dark Mode</a>
+    </div>  
+</div>
+<div class="menu-container">
+  <button class="menu-btn">
+    <span class="hamburger-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+  </button>
+  <div class="menu-content">
+    <button onclick="showPage('screen-splash')">RESTART</button>
+     <button onclick="showPage('flight-date')">
+      Flight Details</button>
+     <button onclick="showPage('screen-discovery')">
+      PURPOSE(PEMDAS)</button>
+    <button onclick="showPage('probing-questions')">
+      Probing Questions</button>
+     <button onclick="showPage('preferences')">
+      ESSENTIALS(PEMDAS)</button>
+     <button onclick="showPage('market-data')">
+      MARKET DATA(PEMDAS)</button>
+     <button onclick="showPage('market-price')">
+      ACTUAL SALE(PEMDAS)</button>
+    <button onclick="showPage('objection-handling')">
+      Handle Objections</button>
+    <button onclick="showPage('promotional-deal')">
+      Super Saver Fare</button>
+  </div>
+</div>
+<div id="screen-splash" class="container">
+    <h1> Call Flow </h1>
+   <p>Energy<br>Confidence<br>Smile when you speak<br>Mirror the pacing<br>Get the attention</p>
+    <div class="container">
+      <button class="call-type" onclick="show(1)">ITN</button>
+      <button class="call-type" onclick="show(2)">CAC</button>
+      <button class="call-type" onclick="show(3)">BQ/Reasssigned</button>
+      <button class="call-type" onclick="show(4)">Follow Up</button>
+   <div id="script-box">
+      </div>
+   </div>
+    <button class="main-btn" 
+onclick="showFlightDates()"> Start </button>
+  </div>
+<div id="flight-date" class="container" style="display: none;">
+  
+  <h1>Flight Details</h1>
+  <div><label>Passenger's Name: </label>
+    <input type="text" id="pax-name" placeholder="enter pax name..."></div>
+  <div class="trip-type-container">
+    <button type="button" class="trip-btn" onclick="setTripType('Round trip')">Round trip</button>
+    <button type="button" class="trip-btn" onclick="setTripType('One way')">One way</button>
+   
+    </div>
+  <div class="flight-selection-row">
+  <div class="input-group">
+    <label>Leaving from</label>
+        <input type="text" id="dep-input"  placeholder="city or airport..." autocomplete="off">
+    <div id="dep-results" class="results-container"></div>
+    </div>
+    <div class="input-group">
+  <label>Going to</label>
+        <input type="text" id="arr-input" placeholder="city or airport..." autocomplete="off">
+    <div id="arr-results" class="results-container"></div>
+  </div>
+</div>
+  <div class="date-row">
+    <div class="input-group">
+  <label>Departure Date</label>
+        <input type="date" id="Departure-Date" class="flight-input">
+    </div>
+   <div id="ret-container" class="input-group">
+  <label>Return date</label>
+        <input type="date" id="Return-Date" class="flight-input">
+   </div>
+  </div>
+<div class="passenger-container">
+  <button class="passenger-btn" onclick="togglePassengerMenu()">Passengers: <span id="sum-pax-count">1 Adult</span></button>
+  <div id="pax-dropdown" class="pax-menu" style="display: none;">
+    <div class="pax-row">
+      <span>Adult (12+)</span>
+      <div class="controls">
+        <button onclick="changePax('adult', -1)">-</button>
+        <span id="adult-qty">1</span>
+        <button onclick="changePax('adult', 1)">+</button>
+      </div>
+    </div>
+    <div class="pax-row">
+      <span>Child (2-11)</span>
+      <div class="controls">
+        <button onclick="changePax('child', -1)">-</button>
+        <span id="child-qty">0</span>
+        <button onclick="changePax('child', 1)">+</button>
+      </div>
+    </div>
+    <div class="pax-row">
+      <span>Infant on seat (under 2)</span>
+      <div class="controls">
+        <button onclick="changePax('infantSeat', -1)">-</button>
+        <span id="infantSeat-qty">0</span>
+        <button onclick="changePax('infantSeat', 1)">+</button>
+      </div>
+    </div>
+    <div class="pax-row">
+      <span>Infant on lap (under 2)</span>
+      <div class="controls">
+        <button onclick="changePax('infantLap', -1)">-</button>
+        <span id="infantLap-qty">0</span>
+        <button onclick="changePax('infantLap', 1)">+</button>
+      </div>
+    </div>
+  </div>
+  </div>
+    
+  <button class="continue-link" onclick="showDiscovery()">Continue</button>
+  <button class="back-link" onclick="showSplash()">Back</button>
+</div>
+  <div id="screen-discovery" class="container" style="display: none;">
+    <h1 id="purpose-heading">PURPOSE(Pemdas)</h1>
+    
+    <div>
+    <label>Destination</label>
+        <input type="text" id="discovery" placeholder="enter city..">
+      <div class="search-container">
+      <button class="search-place" onclick="searchPlace()">What is this place known for?</button>
+      </div>
+      
+       <div class="container">
+      <button class="flight-dates" onclick="show(5)">Rush Flight</button>
+    <button class="flight-dates" onclick="show(9)">High season</button>
+    <button class="flight-dates" onclick="show(6)">Not Rush/High season</button>
+<div id="script-box2">
+      </div>
+    </div>
+    
+   
+    </div>
+<div class="button-grid">
+  <button class="tile" onclick="showFamilyVisit()">Family Visit</button>
+  <button class="tile" onclick="showLeisure()">Leisure</button>
+  <button class="tile" onclick="showBusiness()">Business</button>
+  <button class="tile" onclick="showBereavement()">Bereavement</button>
+    </div>
+    
+  <button class="back-link" onclick="backFromDestination()">Back</button>
+ </div>
+<div id="family-visit" class="container" style="display: none;">
+  <h2>Family Visit</h2>
+  <p><i>That's wonderful! There is truly nothing better than a family reunion. When was the last time you've been there in (destination)?</i></P>
+<div class="input-inline-group">Previous trip to destination:<input type="text" id="time" placeholder="enter last travel to destination.....">
+</div>
+<div class="container">
+  <button class="call-type" onclick="show(7)">More than a Year</button>
+  <button class="call-type" onclick="show(8)">Less than a year</button>
+   
+  <div id="script-box3">
+  </div>
+</div>
+<div>
+  <button class="continue-link" onclick="showProbing()">Continue</button>
+  <button class="back-link" onclick="backToDiscovery()">Back</button>
+</div>
+</div>
+<div id="leisure" class="container" style="display: none;">
+  <h1>Leisure</h1>
+  <div class="toggle-wrapper">
+    <span class="label-text">Solo</span>
+    <label class="pax-switch">
+        <input type="checkbox" id="pax-toggle" onchange="togglePaxType(this)">
+        <span class="pax-slider"></span>
+    </label>
+    <span class="label-text">Pairs</span>
+</div>
+  <div id="pax-script-display" class="script-box">
+    </div>
+  <p><i>Is it the first time you will have a vacation to (destination)?</i>
+  <div class="toggle-wrapper">
+    <span class="label-text">Repeat Visitor</span>
+    <label class="pax-switch">
+        <input type="checkbox" id="visit-toggle" onchange="toggleVisitType(this)">
+        <span class="pax-slider"></span>
+    </label>
+    <span class="label-text">First Time</span>
+</div>
+
+<div id="visit-script-display" class="script-box">
+    </div>
+  
+  <button class="continue-link" onclick="showPage('probing-questions')">Continue</button>
+  <button class="back-link" onclick="showPage('screen-discovery')">Back</button>
+</div>
+<div id="business" class="container" style="display: none;">
+  <h1>Business Trip</h1>
+  <p><i>I see you're heading out for a business appointment. I’ll make sure to prioritize the most direct options for you. When will be the exact time and date of the appointment?</i></p>
+  <div class="input-inline-group">Need to Arrive before: <input type="text" id="arrive" placeholder="need to arrive before.....">
+</div>
+  <button class="continue-link" onclick="showPage('probing-questions')">Continue</button>
+  <button class="back-link" onclick="showPage('screen-discovery')">Back</button>
+      </div>
+<div Id="bereavement" class="container" style="display: none;">
+  <h1>Deceased / Illness visit</h1>
+  <div class="toggle-wrapper">
+    <span class="label-text">Deceased : On</span>
+    <label class="pax-switch">
+        <input type="checkbox" id="emp-toggle" onchange="toggleEmp(this)">
+        <span class="pax-slider"></span>
+    </label>
+    <span class="label-text">Illness : Off</span>
+</div>
+  <div id="empathy-script-display" class="script-box2">
+    </div>
+  <p>Assurance:<i> Let’s put the fare aside for just a moment—my main goal right now is simply to get you home as quickly and smoothly as possible. I'm going to search our special IATA database for the most direct path available.</i></p>
+  <button class="continue-link" onclick="showPage('probing-questions')">Continue</button>
+  <button class="back-link" onclick="showPage('screen-discovery')">Back</button>
+</div>
+<div id="promotional-deal" class="container" style="display: none;">
+  <h1>SSF</h1>
+  <div id="urgency" class="checkbox-group">
+    <label><input type="checkbox" value="Within 3 months" onchange="updatePreferences()"> Within 3 months</label>
+    <label><input type="checkbox" value="Rush" onchange="updatePreferences()">Very Rush</label>
+    <label><input type="checkbox" value="Multiple Pax" onchange="updatePreferences()"> Multiple Pax</label>
+    <label><input type="checkbox" value="High Season" onchange="updatePreferences()"> High Season</label>
+    <label><input type="checkbox" value="Weekends" onchange="updatePreferences()"> Weekends</label>
+</div>
+  <label>How much he/she saw online?</label>
+        <input type="text" id="ssf-script" placeholder="0.00">
+    <p id="script-text2">
+      <i>I'm glad you asked about our super saver fare. That <span id="ssf-display">________</span> dollar fare is one of  our special deal we offer, but because it's so low, // the airlines only release a few seats per flight at that price. Usually, those are not available during ------(check box)------. Right now, to see if we can grab one of our special deals in accordance to your unique needs. // I will contact IATA for us to get the closest price we can give for you or even some cancelled trip and reserved ticket by other passengers that haven't been paid yet. // So I need your flight preferences // for me to choose what available special deal works best for you.</i></p>
+  <button class="continue-link" onclick="showPage('preferences')">Continue</button>
+</div>
+<div id="probing-questions" class="container" style="display: none;">
+  <h2>Probing Questions!!!</h2>
+  <div class="checkbox-group">
+    <label><input type="checkbox" value="Within 3 months" onchange="updatePreferences()"> Within 3 months</label>
+    <label><input type="checkbox" value="Rush" onchange="updatePreferences()">Very Rush</label>
+    <label><input type="checkbox" value="Multiple Pax" onchange="updatePreferences()"> Multiple Pax</label>
+    <label><input type="checkbox" value="High Season" onchange="updatePreferences()"> High Season</label>
+    <label><input type="checkbox" value="Weekends" onchange="updatePreferences()"> Weekends</label>
+</div>
+  <p><i>Did you speak to an agent before outside Asaptickets?</i></p>
+  
+  <div class="container">
+  <button class="yn-link" onclick="show(10)">Yes</button>
+  <button class="yn-link" onclick="show(11)">No</button>
+    <div id="script-box4">
+    </div>
+  </div>
+  
+  <button class="continue-link" onclick="goToPreferences()">Continue</button>
+  <button class="back-link" onclick="backFromProbingQuestions()">Back</button>
+</div>
+  <div id="preferences" class=container style="display: none;">
+    <h1 id="purpose-heading">Essentials(Pemdas)</h1>
+    <p style="text-align: left"><b>Instruction: Check price in CMS </b></h>
+    <p><i>I have a lot of flights available // for us to narrow down the options // May I have your specific preferences for this flight?</i></p>
+    <textarea id="customer-needs" placeholder="e.g., Aisle seat,wheelchair assistance, cheapest...."></textarea>
+    <div class="yn-group">
+      <button class="continue-link" onclick="showMarketData()">Continue</button>
+    </div>
+    <button class="back-link" onclick="showPage('probing-questions')">Back</button>
+</div>
+<div Id="market-data" class="container" style="display: none;">
+  <h1 id="purpose-heading">Market Data(Pemdas)</h1>
+  
+  <div class="websites-btn">
+    <button class="websites-link" onclick="searchFlight('justfly')">Justfly</button>
+    <button class="websites-link" onclick="searchFlight('flighthub')">Flight Hub</button>
+    <button class="websites-link"
+ onclick="searchFlight('kayak')">Kayak</button>
+    <button class="websites-link" onclick="searchFlight('expedia')">Expedia</button>
+    <button class="websites-link" onclick="searchFlight('ita')">ITA Matrix</button>
+    <button class="websites-link" onclick="searchFlight('googleflights')">Google Flights</button>
+    <button class="websites-link" onclick="searchFlight('booking')">Booking.com</button>
+    <div>
+    <P style="text-align: left">Instruction: Read back the flight summary to the passenger</p><br>
+    <p style="color: red; text-align: left" >Note:<br> Don't read the script if Pax have previous agent in this concern or notice that they are aware of the actual prices. Go to offering directly.
+      <div>
+      <button class="tile" onclick="showPage('market-price')">Actual Sale</button>
+    </div>
+  <label>How much online?</label>
+        <input type="text" id="online-price-input" placeholder="0.00" oninput="calculateMarkup()">
+    <p id="script-text3">
+      <i>Base on your flight preferences // the actual prices in the live market for a confirmed seat is starting from, // wow! its too high for me, // <span id="markup-display">________</span> and more depending on the booking class.// But dont worry, // For me to give you cheaper than these, I need to check if there are cancelled or reserved ticket from IATA. It could only take a minute or 2. Alright?</i></p>
+  </div>
+  </div>
+  <button class="continue-link" onclick="showActualSale()">Continue</button>
+    <button class="back-link" onclick="backFromMarketData()">Back</button>
+</div>
+    <div id="market-price" class="container" style="display: none;">
+       <h1 id="purpose-heading">Actual Sale(Pemdas)</h1>
+      
+      <div class="actual-sale-container">
+    <table class="price-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th id="header-adult">Adult 1</th>
+                <th id="header-child">Child 0</th>
+                <th id="header-infant">Infant 0</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Net</strong></td>
+                <td><input type="text" id="net-adult" placeholder="0.00" class="price-input"></td>
+                <td><input type="text" id="net-child" placeholder="0.00" class="price-input"></td>
+                <td><input type="text" id="net-infant" placeholder="0.00" class="price-input"></td>
+            </tr>
+            <tr>
+                <td><strong>Selling</strong></td>
+                <td><input type="text" id="sell-adult" placeholder="0.00" class="price-input"></td>
+                <td><input type="text" id="sell-child" placeholder="0.00" class="price-input"></td>
+                <td><input type="text" id="sell-infant" placeholder="0.00" class="price-input"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        </div>
+</div>
+      
+      <div class="tcs-dropdown">
+    <button class="tcs-main-btn">TCS ⚙️</button>
+    <div class="tcs-content">
+      <button onclick="applyTCSToAll('none')">None (Net x1)</button>
+        <button onclick="applyTCSToAll('basic')">Basic (19%)</button>
+        <button onclick="applyTCSToAll('premium')">Premium (23%)</button>
+        <button onclick="applyTCSToAll('all')">All Inc. (25%)</button>
+    </div>
+</div>
+      <div class="dp-dropdown">
+    <button class="dp-main-btn">DreamPass ✨</button>
+    <div class="dp-content">
+        <div class="dp-sub-dropdown">
+            <button class="dp-sub-btn">USD 🇺🇸 »</button>
+            <div class="dp-sub-content">
+                <button onclick="applyDreamPass(99.97)">Silver ($99.97)</button>
+                <button onclick="applyDreamPass(164.97)">Gold ($164.97)</button>
+                <button onclick="applyDreamPass(194.97)">Platinum ($194.97)</button>
+            </div>
+        </div>
+        
+        <div class="dp-sub-dropdown">
+            <button class="dp-sub-btn">CAD 🇨🇦 »</button>
+            <div class="dp-sub-content">
+                <button onclick="applyDreamPass(136.97)">Silver (CAD136.97)</button>
+                <button onclick="applyDreamPass(225.97)">Gold (CAD225.97)</button>
+                <button onclick="applyDreamPass(274.97)">Platinum (CAD274.97)</button>
+            </div>
+        </div>
+    </div>
+</div>
+      <button class="clear-btn" onclick="clearSellingPrices()">Clear Selling🗑️</button>
+      <button class="clear-btn" onclick="clearAllPrices()">CLEAR ALL 🗑️</button>
+      
+      <div>
+        <button class="back-link" onclick="showPage('market-data')">Back</button>
+      </div>
+</div>
+<div Id="objection-handling" class="container" style="display: none;">
+  <h1>Objection Handling</h1>
+  <div class="objection-grid">
+    <button class="obj-btn" onclick="showPage('talk-spouse')">&#128101; I will talk to my family member/spouse</button>
+    <button class="obj-btn" onclick="showPage('check-website')">&#128269; I will check other websites</button>
+    <button class="obj-btn" onclick="showPage('cheaper-website')">&#128181; I saw cheaper option on the other website</button>
+    <button class="obj-btn" onclick="showPage('not-final')">&#128197; My dates are not final</button>
+    <button class="obj-btn" onclick="showPage('send-email')">&#128231; Just give me the price</button>
+    <button class="obj-btn" onclick="showPage('hurry')">&#127939; I'm in a hurry</button>
+    <button class="obj-btn" onclick="showPage('busy')">&#10144; I'm busy/ at work / meeting</button>
+    <button class="obj-btn" onclick="showPage('price-adamant')">&#128176; Just give me the price</button>
+   </div>
+ </div>
+<div id="talk-spouse" class="container" style="display: none;">
+  <h2>I will talk to my wife/family member first</h2>
+  
+  <p><i>That's perfectly understandable! It's always a good idea to discuss travel plans with your family member, especially when it comes to booking flights. However, I do want to flag something important. Flight prices, especially for (dates and destination) we're looking at, can change by the minute. What I'm seeing on my screen right now is a live, real-time price // directly from Central Agency. My main concern is that // if we wait, there's a real chance this specific fare // or even the availability for this flight // could be gone when you come back. But I have a solution for you, we can book it now just to secure the ticket // and if your family member don't like this option, we can always cancel it with 100% refund. No processing fee within 24 hours. Can I have the name of the passenger?</i></p>
+  
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+<div id="check-website" class="container" style="display: none;">
+  <h2>I will check other websites</h2>
+  <p><i>I completely understand you want to ensure you're getting the best price and value. It's always smart to compare. The good news is, I have direct access to a live, real-time inventory system. This means I'm seeing the absolute latest prices and availability across all major airlines and booking channels right now, exactly as they are. My concern is that, if we leave this page, the exact fare or seat we are looking at might not be available when you return.</i></p>
+  
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+<div id="cheaper-website" class="container" style="display: none;">
+  <h2>I saw cheaper option on the other website</h2>
+  <p><i>That's a smart way in booking a ticket when you compare prices online. Even me before, I always do that. But may I know when did you see it, how much it is and,// if it is the same itinerary as what we've discussed? Because if the itinerary is in accordance to you needs, I will manually build the flight for you through Central Agency and I'm sure I can get it in a cheaper deal</i></p>
+  <div class="text-input-group">
+    <label>How much you saw online?</label>
+    <textarea id="online-price" maxlength="15" placeholder="enter when..."></textarea>
+    <label>When did you get this price?</label>
+    <textarea id="date-price" maxlength="15" placeholder="enter when..."></textarea>
+    <br>
+    <label>What website did you use?</label>
+    <textarea id="website-type" maxlength="15" placeholder="enter website...."></textarea>
+  </div>
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+<div id="not-final" class="container" style="display: none;">
+  <h2>My dates are not final</h2>
+  <p><i>I understand the hesitation, but keep in mind that airline prices tend to increase as the departure date gets closer, especially for popular routes or peak seasons. Waiting might mean paying significantly more for the same flight. But Good news! Most of our Regular economy fares allow changes without a change fee. This means you can book now to secure a good price, and if your date shifts, you'll only pay the difference in fare, if any.<i></p>
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+<div id="send-email" class="container" style="display: none;">
+  <h2>Just send it to my email</h2>
+  <p><i>I can definitely do that! However, because I’m looking at canceled segments and private fares, these seats disappear the moment I close the screen. If I email it and you see it an hour later, the price will likely change. Do you have 5 minutes for me to prioritize you so that we can secure your ticket now?</i></p>
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+<div id="hurry" class="container" style="display: none;">
+  <h2>I'm in a hurry</h2>
+  <p><i>I understand you're in a hurry right now, and I definitely want to be respectful of your time.To give you the best flight options and make sure we cover everything like layovers, baggage, and the best prices, I'll need at least about 5 - 10 minutes of your focused attention. Rushing through it might mean missing out on a better deal or itinerary.</i></p>
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+<div id="busy" class="container" style="display: none;">
+  <h2>I'm busy right now</h2>
+  <p><i>Absolutely, I completely understand you're busy at work, and I don't want to keep you if that’s the case. The only reason I'm mentioning this now is that, the price we discussed is the absolute best available, and airline fares can change very quickly. We wouldn't want you to miss out on this rate if you're set on these travel dates. Alternatively, if you'd prefer, I can schedule a very quick 5 - 10 minutes call for you later today, when you're not at work or on break? Just let me know what time works best.</i></p>
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+  <div id="price-adamant" class="container" style="display: none;">
+  <h2>Just give me the price</h2>
+    <p><i>Just bear with me for one moment—this is the fast part. I’m pulling together the discounted 'private' fares and canceled segments now. I’ll make sure the rate I find beats anything currently on the public market.</i></p>
+  <button class="back-link" onclick="showPage('objection-handling')">Back</button>
+</div>
+</body>
+</html>
